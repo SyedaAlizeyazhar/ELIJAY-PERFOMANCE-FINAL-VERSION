@@ -1,0 +1,342 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ELIJAY brand tokens */
+:root {
+  --elijay-black: #050607;
+  --elijay-gold: #d6a343;
+  --elijay-emerald: #003b32;
+  --elijay-teal: #008a70;
+  --elijay-warm-white: #f4f1e8;
+  --elijay-charcoal: #141716;
+  --elijay-white: #ffffff;
+}
+
+/* Theme tokens as RGB triplets (consumed by tailwind.config.ts). Dark is the
+   default; next-themes toggles the class on <html>. */
+:root,
+.dark {
+  --background: 5 6 7; /* #050607 */
+  --surface: 10 12 13;
+  --panel: 20 23 22;
+  --emerald-surface: 0 59 50;
+  --border: 31 36 34;
+  --muted: 140 148 145;
+  --foreground: 244 241 232; /* #F4F1E8 */
+  --gold: 214 163 67; /* #D6A343 */
+  --teal: 0 138 112; /* #008A70 */
+  color-scheme: dark;
+}
+
+/* Light: "Champagne & Emerald" — pearl-champagne paper, white cards with
+   gold-tinted hairlines, deep emerald ink for text, and a rich antique gold
+   that keeps contrast on a pale ground (brand #D6A343 alone is ~2:1). The
+   footer flips to deep emerald so the page ends on a luxe dark band. */
+.light {
+  --background: 248 244 236; /* #F8F4EC champagne pearl */
+  --surface: 241 234 220;
+  --panel: 255 255 255; /* cards #FFFFFF */
+  --emerald-surface: 255 255 255;
+  --border: 234 223 200; /* #EADFC8 gold hairline */
+  --muted: 95 111 105;
+  --foreground: 6 37 31; /* #06251F deep emerald ink */
+  --gold: 176 125 30; /* #B07D1E antique gold */
+  --teal: 0 116 95; /* #00745F */
+  color-scheme: light;
+}
+
+.light footer {
+  --background: 6 37 31;
+  --foreground: 244 241 232;
+  --muted: 160 184 175;
+  --border: 18 64 54;
+  --gold: 214 163 67;
+  --teal: 64 196 164;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Set on html as well as body. Without it the browser paints its default
+     white between navigations, which shows as a flash on a dark site. */
+  background-color: rgb(var(--background));
+  transition: background-color 0.4s ease;
+}
+
+body {
+  /* Decorative blobs and the fixed globe are oversized by design; this stops
+     any of them from creating a horizontal scrollbar on small screens. */
+  overflow-x: hidden;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+  transition: background-color 0.4s ease, color 0.4s ease;
+  line-height: 1.6;
+}
+
+::selection {
+  background-color: rgba(214, 163, 67, 0.3);
+}
+
+/* Decorative glows overhang the viewport; clip them so phones never get a
+   sideways scroll or a gap on the right. `clip` keeps sticky elements
+   working; older Safari (iOS < 16) doesn't know it, so it falls back to
+   `hidden`. */
+.site-main {
+  overflow-x: hidden;
+}
+@supports (overflow-x: clip) {
+  .site-main {
+    overflow-x: clip;
+  }
+}
+
+/* Phones: no grey flash on tap, and no text resizing on rotate (iOS). */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+a,
+button,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--elijay-emerald);
+}
+
+.text-gold-gradient {
+  background-image: linear-gradient(90deg, #c9912e 0%, #d6a343 45%, #f5d27a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.light .text-gold-gradient {
+  background-image: linear-gradient(100deg, #7a520f 0%, #b07d1e 35%, #d6a343 65%, #b07d1e 100%);
+}
+
+/* Light headlines: deep emerald ink gradient instead of flat black. */
+.light h1,
+.light h2 {
+  background-image: linear-gradient(120deg, #041c17 0%, #06251f 45%, #0d4a3d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.light footer h1,
+.light footer h2 {
+  background-image: none;
+  color: rgb(var(--foreground));
+}
+
+/* Light theme ambience: champagne-gold glow top-right, a blush of warm light
+   top-left and an emerald mist lower down, plus quieter emerald blobs so
+   sections don't read as green haze. */
+.light body {
+  background-image:
+    radial-gradient(ellipse 55% 900px at 100% 0%, rgba(214, 163, 67, 0.2), transparent 70%),
+    radial-gradient(ellipse 40% 700px at 0% 0%, rgba(245, 210, 122, 0.14), transparent 70%),
+    radial-gradient(ellipse 60% 1400px at 0% 100%, rgba(0, 138, 112, 0.08), transparent 70%);
+}
+
+/* Cards: white with an emerald-tinted soft lift and a glassy top highlight;
+   the gold hairline comes from --border. */
+.light .rounded-2xl.border {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(6, 37, 31, 0.04),
+    0 18px 40px -22px rgba(6, 37, 31, 0.22);
+}
+
+/* Header gets a champagne frost with a gold underline once scrolled. */
+.light header.backdrop-blur-xl {
+  background-color: rgba(248, 244, 236, 0.78);
+  box-shadow: 0 10px 30px -20px rgba(6, 37, 31, 0.25);
+}
+
+/* Gold CTA: deeper metallic in light mode, with a warm glow. */
+.light .bg-gold-gradient {
+  background-image: linear-gradient(100deg, #b07d1e 0%, #d6a343 50%, #e9bf62 100%);
+  box-shadow: 0 10px 28px -12px rgba(176, 125, 30, 0.6);
+}
+.light .bg-emerald-blob {
+  opacity: 0.1 !important;
+}
+.light ::selection {
+  background-color: rgba(176, 125, 30, 0.22);
+}
+
+/* 3D depth layers: background < blobs < cards < CTA */
+.layer-bg { z-index: 0; }
+.layer-blob { z-index: 1; }
+.layer-card { z-index: 2; }
+.layer-cta { z-index: 3; }
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* ---------------------------------------------------------------------------
+   "Gold Thread" — the boxless design language.
+   Content isn't fenced in cards; it hangs off fine gold threads that fade at
+   their ends, with a soft glow falling from the thread.
+   --------------------------------------------------------------------------- */
+
+/* An open panel (used by <Card>): top thread + falling glow, no box. */
+.sheet {
+  background: radial-gradient(120% 70% at 50% 0%, rgba(214, 163, 67, 0.07), transparent 70%);
+}
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(214, 163, 67, 0.55) 18%,
+    rgba(245, 210, 122, 0.85) 50%,
+    rgba(214, 163, 67, 0.55) 82%,
+    transparent
+  );
+}
+
+/* A standalone thread (horizontal rule that fades at both ends). */
+.thread {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(214, 163, 67, 0.45) 20%,
+    rgba(214, 163, 67, 0.45) 80%,
+    transparent
+  );
+}
+
+/* Ledger row: a hairline under each row and a gold thread that sweeps in
+   from the left on hover. */
+.ledger-row {
+  position: relative;
+  border-bottom: 1px solid rgba(214, 163, 67, 0.12);
+}
+.ledger-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  background: linear-gradient(90deg, #d6a343, #f5d27a 60%, transparent);
+}
+.ledger-row:hover::after,
+.ledger-row:focus-within::after {
+  transform: scaleX(1);
+}
+
+/* Outlined numerals ("01") that fill with gold on hover of their group. */
+.numeral-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(214, 163, 67, 0.55);
+  transition: color 0.4s ease, -webkit-text-stroke-color 0.4s ease;
+}
+.group:hover .numeral-outline {
+  color: rgba(214, 163, 67, 0.9);
+  -webkit-text-stroke-color: rgba(214, 163, 67, 0.9);
+}
+
+/* Luxury form field: no box, a hairline underneath, and on focus a gold
+   line that opens from the centre outwards. Used by Input, Textarea and
+   the Select trigger. */
+.lux-field {
+  background-color: transparent;
+  background-image: linear-gradient(90deg, #c9912e, #f5d27a 50%, #c9912e);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 0% 1px;
+  border-bottom: 1px solid rgba(244, 241, 232, 0.14);
+  transition: background-size 0.6s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
+}
+.lux-field:hover {
+  border-bottom-color: rgba(244, 241, 232, 0.28);
+}
+.lux-field:focus,
+.lux-field:focus-visible,
+.lux-field[data-state="open"] {
+  outline: none;
+  background-size: 100% 1px;
+}
+/* Browser autofill paints its own box; keep it on the page colour. */
+.lux-field:-webkit-autofill,
+.lux-field:-webkit-autofill:hover,
+.lux-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgb(var(--foreground));
+  -webkit-box-shadow: 0 0 0 1000px rgb(var(--background)) inset;
+  caret-color: #d6a343;
+  transition: background-color 9999s ease-out, background-size 0.6s;
+}
+/* The label above a field turns gold while you're in it. */
+form div:focus-within > label {
+  color: #d6a343;
+}
+
+/* The sparkle on the logo ring twinkles slowly. */
+.logo-glint {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: glint 4.5s ease-in-out infinite;
+}
+@keyframes glint {
+  0%, 70%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  80% { opacity: 1; transform: scale(1) rotate(45deg); }
+  90% { opacity: 0.3; transform: scale(0.7) rotate(90deg); }
+}
+
+/* FAQ: <details> rows that open with a rotating plus. */
+.faq summary { list-style: none; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq[open] .faq-plus { transform: rotate(45deg); color: #d6a343; }
+
+/* SVG ring that draws itself once (stat icons). */
+.ring-draw {
+  stroke-dasharray: 126;
+  stroke-dashoffset: 126;
+  animation: ring-draw 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes ring-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(rgba(214, 163, 67, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214, 163, 67, 0.045) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 35%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
